@@ -18,7 +18,3 @@ create table flights(
     position_source INT,
     category INT
 )
-
-create table flights_state(
-    state 
-)
