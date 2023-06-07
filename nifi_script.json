@@ -1,0 +1,123 @@
+[{
+    "operation": "shift",
+        "spec": {
+            "states": {
+                "*": {
+                    "*": {
+                    "@0": "flights.&"
+                    }
+                }
+            }
+        }
+},
+
+{
+    "operation": "shift",
+        "spec":{
+            "*": {
+                "0": "[#2].ica024",
+                "1": "[#2].callsign",
+                "2": "[#2].origin_country",
+                "3": "[#2].time_position",
+                "4": "[#2].last_contact",
+                "5": "[#2].longitude",
+                "6": "[#2].latitude",
+                "7": "[#2].baro_altitude",
+                "8": "[#2].on_ground",
+                "9": "[#2].velocity",
+                "10": "[#2].true_track",
+                "11": "[#2].vertical_rate",
+                "13": "[#2].geo_altitude",
+                "15": "[#2].spi"
+            }
+        }
+    },  {
+        "operation": "shift",
+        "spec":{
+            "*": {
+                "*": {
+                    "@0": "[#2].&"
+                }
+            }
+        }
+    },
+
+    {
+        "operation": "shift",
+        "spec":{
+            "*": {
+                "icao24": {
+                    "*": {
+                        "@": "[&].icao24"
+                    }
+                },
+                "callsign": {
+                    "*": {
+                        "@": "[&].callsign"
+                    }
+                },
+                "origin_country": {
+                    "*": {
+                        "@": "[&].origin_country"
+                    }
+                },
+                "time_position": {
+                    "*": {
+                        "@": "[&].time_position"
+                    }
+                },
+                "last_contact": {
+                    "*": {
+                        "@": "[&].last_contact"
+                    }
+                },
+                "longitude": {
+                    "*": {
+                        "@": "[&].longitude"
+                    }
+                },
+                "latitude": {
+                    "*": {
+                        "@": "[&].latitude"
+                    }
+                },
+                "baro_altitude": {
+                    "*": {
+                        "@": "[&].baro_altitude"
+                    }
+                },
+                "on_ground": {
+                    "*": {
+                        "@": "[&].on_ground"
+                    }
+                },
+                "velocity": {
+                    "*": {
+                        "@": "[&].velocity"
+                    }
+                },
+                "true_track": {
+                    "*": {
+                        "@": "[&].true_track"
+                    }
+                },
+                "vertical_rate": {
+                    "*": {
+                        "@": "[&].vertical_rate"
+                    }
+                },
+                "geo_altitude": {
+                    "*": {
+                        "@": "[&].geo_altitude"
+                    }
+                },
+                "spi": {
+                    "*": {
+                        "@": "[&].spi"
+                    }
+                }
+            }
+        }
+    }
+                
+]
