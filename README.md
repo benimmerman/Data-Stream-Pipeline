@@ -1,13 +1,15 @@
 # DE_Bootcamp_Final
 
-Architecture:
+# Architecture:
 
 <img width="1411" alt="Screen Shot 2023-03-29 at 7 05 34 PM" src="https://user-images.githubusercontent.com/113261578/228687416-1c60c5b1-1cec-43d4-bb31-88b49327ad21.png">
 
-Project Description:
+# Project Summary:
 
---This project builds a real-time application that collects data streamed from airplanes into an API called OpenSky REST API, and streams the data collected using Kafka and Spark Streaming to create live visual models that can be analyzed on Apache Superset.
+This project builds a real-time application that collects data streamed from airplanes into an API called OpenSky REST API, and streams the data collected using Kafka and Spark Streaming to create live visual models that can be analyzed on Apache Superset.
 
+
+# Running This Code
 --To set up the project, docker containers are used to create a MySQL database on an EC2 instance, as well as an MSK cluster which are both using the same VPC.
 
 --Once the database and MSK cluser are created, we are ready to use the data that is constantly being updated as a JSON document from the API.
