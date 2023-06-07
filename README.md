@@ -8,6 +8,7 @@
 
 This project builds a real-time application that collects data streamed from airplanes into an API called OpenSky REST API, and streams the data collected using Kafka and Spark Streaming to create live visual models that can be analyzed on Apache Superset.
 
+Link to the viudeo presentation of this project: https://youtu.be/YLg45TL1GPA
 
 # Running This Code
 
