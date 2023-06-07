@@ -77,24 +77,19 @@ Other two topics should be empty since the connection with MySQL has not been es
 
 curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" localhost:8083/connectors/ -d '{ "name": "inventory-connector", "config": { "connector.class": "io.debezium.connector.mysql.MySqlConnector", "tasks.max": "1", "database.hostname": "mysql", "database.port": "3306", "database.user": "debezium", "database.password": "dbz", "database.server.id": "184054", "database.server.name": "dbserver1", "database.include.list": "final", "database.history.kafka.bootstrap.servers": "b-2.finalmskcluster.0lcx26.c13.kafka.us-east-1.amazonaws.com:9092,b-3.finalmskcluster.0lcx26.c13.kafka.us-east-1.amazonaws.com:9092,b-1.finalmskcluster.0lcx26.c13.kafka.us-east-1.amazonaws.com:9092", "database.history.kafka.topic": "dbhistory.final" } }'
 
+Now the EMR cluster can be set up. In software configuration select Hadoop, Hive, Hue, Spark, and Pig. Keep note of the IAM Role associated with EC2 Instance Profile. You need to make sure this role also has AmazonS3FullAccess. This will allow the EC2 instance to load the python script from S3. Use the same EC2 key pair as your VM. When EMR is up and running, ssh into it and submit our streaming application by using the following command:
 
+ssh -i ~/Location_of_your_pem_key/final-project-DE.pem hadoop@ec2-3-128-190-110.us-east-2.compute.amazonaws.com
 
---To set up the project, docker containers are used to create a MySQL database on an EC2 instance, as well as an MSK cluster which are both using the same VPC.
+This command can be found under your cluster's Summary tab. at "connect to the master node using ssh."
 
---Once the database and MSK cluser are created, we are ready to use the data that is constantly being updated as a JSON document from the API.
+Put the python code into an S3 bucket and run the following commands:
+To ssh into the emr master node:
 
---Apache Nifi is set up on the EC2 instance using a docker container.
+ssh -i 01-setup-ec-vm/nifi-ec-vm.pem hadoop@ec2-3-97-52-3.ca-central-1.compute.amazonaws.com
 
---
+To submit the spark streaming:
 
---
-
---
-
---
-
---During this process, an EMR cluster executes a Pyspark script (final_pyspark.py)
-
---The EMR cluster connectes to MSK which runs Kafka and Spark Streaming to transform the MySQL table into a Hudi table to be sent to an S3 bucket location.
-
---AWS Athena connects the streamed data from the S3 bucket into Apache Superset which is used to create a visualization of the location, speed, and altitude of all flights above an area specified in the API's url.
+spark-submit --master yarn --deploy-mode cluster --name wcd-stremaing-app --jars /usr/lib/hudi/hudi-spark-bundle.jar,/usr/lib/spark/external/lib/spark-avro.jar --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.1 --conf "spark.serializer=org.apache.spark.serializer.KryoSerializer" --conf "spark.sql.hive.convertMetastoreParquet=false" s3://<path to location of final_pyspark.py>
+  
+A Hudi table to be sent to your S3 bucket location specified in the python script. Shortly after submitting your spark streaming app, you will be able to see the data in Athena table. AWS Athena connects the streamed data from the S3 bucket into Apache Superset which is used to create a visualization of the location, speed, and altitude of all flights above an area specified in the API's url.
