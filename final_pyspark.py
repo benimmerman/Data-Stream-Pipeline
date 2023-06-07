@@ -2,13 +2,11 @@ from pyspark.sql import SparkSession
 from pyspark.sql.types import *
 from pyspark.sql.functions import *
 
-BOOTSTRAP_SERVERS = "b-2.finalmskcluster.0lcx26.c13.kafka.us-east-1.amazonaws.com:9092,\
-    b-3.finalmskcluster.0lcx26.c13.kafka.us-east-1.amazonaws.com:9092,\
-    b-1.finalmskcluster.0lcx26.c13.kafka.us-east-1.amazonaws.com:9092"
+BOOTSTRAP_SERVERS = "<bootstrap servers from your MSK cluster>"
 
 if __name__ == "__main__":
     spark = SparkSession.builder.getOrCreate()
-    schema = spark.read.json('s3://wcd-final-benimmerman/schema/final_schema.json').schema
+    schema = spark.read.json('<s3 path to final_schema.json>').schema
 
     df = spark \
         .readStream \
@@ -21,7 +19,7 @@ if __name__ == "__main__":
     transform_df = df.select(col("value").cast("string")).alias("value")\
         .withColumn("jsonData",from_json(col("value"),schema)).select("jsonData.payload.after.*")
 
-    checkpoint_location = "s3://wcd-final-benimmerman/final_checkpoint/"
+    checkpoint_location = "<s3 path to your checkpoint location>"
 
     table_name = 'flights'
     hudi_options = {
@@ -39,7 +37,7 @@ if __name__ == "__main__":
         'hoodie.insert.shuffle.parallelism': 100
     }
 
-    s3_path = "s3://wcd-final-benimmerman/pyspark_output/flights/"
+    s3_path = "<s3 path to output bucket>"
 
 
     def write_batch(batch_df, batch_id):
